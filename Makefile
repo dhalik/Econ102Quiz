@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -MMD
-EXEC = Econ102
+EXEC = Quizzer
 OBJECTS = main.o tester.o
 DEPENDS = ${OBJECTS:.o=.d}
 

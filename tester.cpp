@@ -3,13 +3,12 @@
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
-Tester::Tester(int n){
-	stringstream ss;
-	ss << n << ".dat";
-	this->in = new ifstream(ss.str().c_str());
+Tester::Tester(string s){
+	this->in = new ifstream(s.c_str());
 }
 
 string * Tester::readQuestion(){
@@ -27,10 +26,10 @@ string * Tester::readQuestion(){
 		}
 		if (cond.length() == 2 && (cond[0]-60) > 0)
 			q[0]+="\t";
-		if (cond == "Topic:") continue;
-		if (cond == "Skill:") continue;
-		if (cond == "AACSB:") continue;
-		if (cond == "Question") continue;
+		if (cond == "Difficulty:") continue;
+		if (cond == "Learning") continue;
+		if (cond == "Section") continue;
+		if (cond == "Feedback:") continue;
 		if (cond == "Copyright") continue;
 		q[0]+=temp;
 		q[0]+="\n";
