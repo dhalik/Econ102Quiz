@@ -9,3 +9,5 @@ ${EXEC}: ${OBJECTS}
 
 -include ${DEPENDS}
 
+win: ${OBJECTS}
+	i586-mingw32msvc-g++ main.cpp tester.cpp -o ${EXEC}.exe
