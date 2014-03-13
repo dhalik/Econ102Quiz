@@ -11,3 +11,10 @@
 *.lai
 *.la
 *.a
+
+# Dependancy Compiliations
+*.d
+
+# Executables Generated
+Quizzer
+Quizzer.exe
