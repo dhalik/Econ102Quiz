@@ -11,8 +11,6 @@ int main(){
 
 	Tester * tester = new Tester("QuestionBank/is.dat");
 
-
-
 	delete tester;
 
 	return 0;

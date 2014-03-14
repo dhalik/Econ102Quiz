@@ -8,6 +8,7 @@ class Tester{
 	std::ifstream * in;
 	int totalQ;
 	int randInt;
+
 	std::vector<std::string> questions;
 	std::vector<char> answers;
 	std::vector<int> chapters; // location of the first question of each chapter
