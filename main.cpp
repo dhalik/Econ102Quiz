@@ -11,11 +11,7 @@ int main(){
 
 	Tester * tester = new Tester("QuestionBank/is.dat");
 
-	cout << tester->getRemaining() << endl;
-	cout << tester->getQuestion() << endl;
-	cout << tester->getAnswer('a') << endl;
-	cout << tester->getRemaining() << endl;
-	cout << tester->getTotal() << endl;
+
 
 	delete tester;
 
