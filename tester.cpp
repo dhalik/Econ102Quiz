@@ -4,42 +4,73 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <time.h>
 
 using namespace std;
 
 Tester::Tester(string s){
 	this->in = new ifstream(s.c_str());
+	readQuestion();
+	srand(time(0));
 }
 
-string * Tester::readQuestion(){
-	string * q = new string[2];
+bool Tester::isQuestion(string s){
+	if (s == "Difficulty:") return false;
+	if (s == "Learning") return false;
+	if (s == "Section") return false;
+	if (s == "Feedback:") return false;
+	if (s == "Copyright") return false;
+	return true;
+}
+
+void Tester::readQuestion(){
 	string temp;
 	bool done = false;
+	questions.push_back("");
 	while(!done){
+		if (in->eof())
+			return;
 		getline(*in,temp);
-		stringstream ss(temp);
+		stringstream ss(temp);		
 		string cond;
 		ss >> cond;
-		if (cond == "Answer:"){
-			done = true;
-			break;
+
+		if (isQuestion(cond)){
+			if (cond == "Answer:"){
+				answers.push_back(temp[temp.length()-1]);
+				questions.push_back("");			
+			}
+			else{
+				if (cond.length() == 2 && (cond[0]-60) > 0) questions[questions.size()-1]+="\t";
+				questions[questions.size()-1]+=temp;
+				questions[questions.size()-1]+="\n";
+			}
 		}
-		if (cond.length() == 2 && (cond[0]-60) > 0)
-			q[0]+="\t";
-		if (cond == "Difficulty:") continue;
-		if (cond == "Learning") continue;
-		if (cond == "Section") continue;
-		if (cond == "Feedback:") continue;
-		if (cond == "Copyright") continue;
-		q[0]+=temp;
-		q[0]+="\n";
 	}
-	q[0]+="\n";
-	q[1]+=temp;
-	q[1]+="\n";
-	return q;
 }
 
 bool Tester::done(){
-	return !in->eof();
+	return questions.size()==0;
+}
+
+string Tester::getQuestion(){
+	randInt = rand() % getRemaining();
+	return questions[randInt];
+}
+
+bool Tester::getAnswer(char v){
+	if (answers[randInt] == v){
+		questions.erase(questions.begin()+randInt);
+		answers.erase(answers.begin()+randInt);
+		return true;
+	}
+	return false;
+}
+
+int Tester::getRemaining(){
+	return questions.size();
+}
+
+int Tester::getTotal(){
+	return totalQ;
 }
