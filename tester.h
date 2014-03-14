@@ -20,18 +20,20 @@ class Tester{
 
 private:
 	void readQuestion();
+	int getChapter(int);
+	bool isQuestion(std::string);
+	void getIgnores();
+
 public:
 	explicit Tester(std::string);
 	~Tester();
 
 	bool done();
-	bool isQuestion(std::string);
 	std::string getQuestion();
 	bool getAnswer(char);
 	int getRemaining();
 	int getTotal();
 	int getCorrect();
-	void getIgnores();
 	void deselectChapter(int);
-	bool isSelected();
+	void selectChapter(int);
 };
