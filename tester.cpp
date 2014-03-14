@@ -4,34 +4,39 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <time.h>
 
 using namespace std;
 
 Tester::Tester(string s){
 	this->in = new ifstream(s.c_str());
+	readQuestion();
+	srand(time(0));
 }
 
-string * Tester::readQuestion(){
-	string * q = new string[2];
+bool isQuestion(string s){
+	if (cond == "Difficulty:") return false;
+	if (cond == "Learning") return false;
+	if (cond == "Section") return false;
+	if (cond == "Feedback:") return false;
+	if (cond == "Copyright") return false;
+	return true;
+}
+
+void Tester::readQuestion(){
 	string temp;
 	bool done = false;
 	while(!done){
+		if (in->eof())
+			return;
 		getline(*in,temp);
 		stringstream ss(temp);
+		
 		string cond;
 		ss >> cond;
-		if (cond == "Answer:"){
-			done = true;
-			break;
-		}
-		if (cond.length() == 2 && (cond[0]-60) > 0)
-			q[0]+="\t";
-		if (cond == "Difficulty:") continue;
-		if (cond == "Learning") continue;
-		if (cond == "Section") continue;
-		if (cond == "Feedback:") continue;
-		if (cond == "Copyright") continue;
-		q[0]+=temp;
+		if (cond == "Answer:") break;
+		if (cond.length() == 2 && (cond[0]-60) > 0) questions[questions.size()]+="\t";
+		questions[questions.size()]+=temp;
 		q[0]+="\n";
 	}
 	q[0]+="\n";
@@ -42,4 +47,26 @@ string * Tester::readQuestion(){
 
 bool Tester::done(){
 	return !in->eof();
+}
+
+string getQuestion(){
+	randInt = rand() % getRemaining();
+	return questions[randInt];
+}
+
+bool answer(char v){
+	if (answers[randInt] == v){
+		questions.erase(questions.begin()+randInt);
+		answers.erase(answers.begin()+randInt);
+		return true;
+	}
+	return false;
+}
+
+string getRemaining(){
+	return questions.size();
+}
+
+string getTotal(){
+	return totalQ;
 }
