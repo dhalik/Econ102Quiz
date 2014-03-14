@@ -9,7 +9,7 @@ int main(){
 	char answer = 'a';
 	int right=0,wrong=0;
 
-	Tester * tester = new Tester("QuestionBank/is.dat");
+	Tester * tester = new Tester("QuestionBank/econ.dat");
 
 	delete tester;
 

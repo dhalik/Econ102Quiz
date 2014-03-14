@@ -74,25 +74,3 @@ int Tester::getRemaining(){
 int Tester::getTotal(){
 	return totalQ;
 }
-
-string getQuestion(){
-	randInt = rand() % getRemaining();
-	return questions[randInt];
-}
-
-bool answer(char v){
-	if (answers[randInt] == v){
-		questions.erase(questions.begin()+randInt);
-		answers.erase(answers.begin()+randInt);
-		return true;
-	}
-	return false;
-}
-
-string getRemaining(){
-	return questions.size();
-}
-
-string getTotal(){
-	return totalQ;
-}
