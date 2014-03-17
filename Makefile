@@ -9,7 +9,7 @@ ${EXEC}: ${OBJECTS}
 
 -include ${DEPENDS}
 
-win: ${OBJECTS}
+Quizzer.exe: ${OBJECTS}
 	i586-mingw32msvc-g++ main.cpp tester.cpp -o ${EXEC}.exe
 
 zip: Quizzer Quizzer.exe QuestionBank
