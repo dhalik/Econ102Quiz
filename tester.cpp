@@ -26,10 +26,6 @@ Tester::Tester(string s){
 	readQuestion();
 	srand(time(0));
 	totalQ = questions.size();
-	cout << "class setup sucessful" << endl;	
-	cout << "Quest.size() " << questions.size() << endl;
-	cout << "Ans.size() " << answers.size() << endl;
-	cout << "Chapters.size() " << chapters.size() << endl;
 }
 
 bool Tester::isQuestion(string s){
@@ -67,9 +63,7 @@ void Tester::readQuestion(){
 				questions.push_back("");
 			}
 			else if (cond == "Chapter"){
-				cout << "Creating new chapter at question " << questions.size() << endl;			
 				chapters.push_back(questions.size());
-				selectedChapters.push_back(true);
 			}
 			else{
 				if (cond.length() == 2 && (cond[0]-60) > 0) questions[questions.size()-1]+="\t";
@@ -80,8 +74,12 @@ void Tester::readQuestion(){
 
 		if (in->eof()){
 			done = true;
+			chapters.push_back(questions.size());
 			questions.pop_back();
 		}
+	}
+	for (unsigned int i = 0; i < chapters.size(); i++){
+		selectedChapters.push_back(true);
 	}
 }
 
@@ -90,9 +88,10 @@ bool Tester::done(){
 }
 
 string Tester::getQuestion(){
-	randInt = rand() % getRemaining();
-	while (getChapter(randInt) > 0 && !selectedChapters[getChapter(randInt)])
-		randInt = rand() % getRemaining();
+	randInt = (rand() % questions.size()) + 1;
+	while (!selectedChapters[getChapter(randInt)-1]){ //make sure getchapter is > 0.... Thats for later though.
+		randInt = (rand() % questions.size())+1;
+	}
 	return questions[randInt];
 }
 
@@ -100,9 +99,9 @@ bool Tester::getAnswer(char v){
 	if (answers[randInt] == toUpper(v)){
 		questions.erase(questions.begin()+randInt);
 		answers.erase(answers.begin()+randInt);
+		correct++;
 		return true;
 	}
-	cout << "Question from Chapter " << getChapter(randInt);
 	cout << "Correct Answer is: " << answers[randInt] << endl;
 	return false;
 }
@@ -112,7 +111,12 @@ int Tester::getCorrect(){
 }
 
 int Tester::getRemaining(){
-	return questions.size();
+	int q = 0;
+	for (int i = 0; i < questions.size(); i++){
+		if (selectedChapters[getChapter(i)])
+			q++;
+	}
+	return q;
 }
 
 int Tester::getTotal(){
@@ -127,7 +131,7 @@ void Tester::deselectChapter(int n){
 	bool alldes = false;
 	for (vector<bool>::iterator it = selectedChapters.begin(); it < selectedChapters.end(); it++)
 		alldes = alldes || *it;
-	if (alldes)
+	if (!alldes)
 		return;
 	selectedChapters[n-1] = false;
 }
