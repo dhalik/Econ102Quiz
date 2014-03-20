@@ -90,9 +90,8 @@ bool Tester::done(){
 
 string Tester::getQuestion(){
 	randInt = (rand() % questions.size());
-	while (!selectedChapters[getChapter(randInt+1)-1]){ //make sure getchapter is > 0.... Thats for later though.
+	while (!selectedChapters[getChapter(randInt+1)-1]) //make sure getchapter is > 0.... Thats for later though.
 		randInt = (rand() % questions.size());
-	}
 	return questions[randInt];
 }
 char Tester::getAnswer(char v){
@@ -102,7 +101,7 @@ char Tester::getAnswer(char v){
 		correct++;
 		return v;
 	}
-	return NULL;
+	return answers[randInt];
 }
 
 int Tester::getCorrect(){
@@ -111,11 +110,9 @@ int Tester::getCorrect(){
 
 int Tester::getRemaining(){
 	int q = 0;
-	for (unsigned int i = 0; i < questions.size(); i++){
-		if (selectedChapters[getChapter(i+1)-1]){
+	for (unsigned int i = 0; i < questions.size(); i++)
+		if (selectedChapters[getChapter(i+1)-1])
 			q++;
-		}
-	}
 	return q;
 }
 

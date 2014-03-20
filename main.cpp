@@ -17,7 +17,12 @@ int main(){
 	while (answer != 'q'){
 		cout << tester->getQuestion() << endl;
 		cin >> answer;
-		if (tester->getAnswer(answer)){
+		
+		char ans = tester->getAnswer(answer);
+		cout << ans << endl;
+		
+		
+		if (ans==answer){
 			cout << "Correct!" << endl;
 		}else{
 			cout << "Wrong!" << endl;
