@@ -19,13 +19,11 @@ char toUpper(char v){
 
 
 Tester::Tester(string s){
-	cout << "Setting up class" << endl;
 	file = s;
 	this->in = new ifstream(s.c_str());
 	getIgnores();
 	readQuestion();
 	srand(time(0));
-	totalQ = questions.size();
 }
 
 bool Tester::isQuestion(string s){
@@ -64,6 +62,8 @@ void Tester::readQuestion(){
 			}
 			else if (cond == "Chapter"){
 				chapters.push_back(questions.size());
+				if (questions.size() > 1)
+					totalQ.push_back(questions.size() -chapters[chapters.size()-2]);
 			}
 			else{
 				if (cond.length() == 2 && (cond[0]-60) > 0) questions[questions.size()-1]+="\t";
@@ -75,6 +75,7 @@ void Tester::readQuestion(){
 		if (in->eof()){
 			done = true;
 			chapters.push_back(questions.size());
+			totalQ.push_back(questions.size() - chapters[chapters.size()-2]);
 			questions.pop_back();
 		}
 	}
@@ -88,22 +89,20 @@ bool Tester::done(){
 }
 
 string Tester::getQuestion(){
-	randInt = (rand() % questions.size()) + 1;
-	while (!selectedChapters[getChapter(randInt)-1]){ //make sure getchapter is > 0.... Thats for later though.
-		randInt = (rand() % questions.size())+1;
+	randInt = (rand() % questions.size());
+	while (!selectedChapters[getChapter(randInt+1)-1]){ //make sure getchapter is > 0.... Thats for later though.
+		randInt = (rand() % questions.size());
 	}
 	return questions[randInt];
 }
-
-bool Tester::getAnswer(char v){
+char Tester::getAnswer(char v){
 	if (answers[randInt] == toUpper(v)){
 		questions.erase(questions.begin()+randInt);
 		answers.erase(answers.begin()+randInt);
 		correct++;
-		return true;
+		return v;
 	}
-	cout << "Correct Answer is: " << answers[randInt] << endl;
-	return false;
+	return NULL;
 }
 
 int Tester::getCorrect(){
@@ -112,15 +111,20 @@ int Tester::getCorrect(){
 
 int Tester::getRemaining(){
 	int q = 0;
-	for (int i = 0; i < questions.size(); i++){
-		if (selectedChapters[getChapter(i)])
+	for (unsigned int i = 0; i < questions.size(); i++){
+		if (selectedChapters[getChapter(i+1)-1]){
 			q++;
+		}
 	}
 	return q;
 }
 
 int Tester::getTotal(){
-	return totalQ;
+	int q = 0;
+	for (unsigned int i = 0; i < totalQ.size(); i++)
+		if (selectedChapters[i])
+			q+=totalQ[i];
+	return q;
 }
 
 Tester::~Tester(){
@@ -142,6 +146,6 @@ void Tester::selectChapter(int n){
 
 int Tester::getChapter(int q){
 	for (vector<int>::iterator i = chapters.begin(); i < chapters.end(); ++i)
-		if (q < *i) return (i-chapters.begin());	
+		if (q < *i) return (i-chapters.begin());
 	return -1;
 }

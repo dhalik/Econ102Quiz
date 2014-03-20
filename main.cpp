@@ -14,15 +14,6 @@ int main(){
 
 	Tester * tester = new Tester("QuestionBank/"+bank+".dat");
 
-	cout << "Deselecting Chapters" << endl;
-
-	tester->deselectChapter(1);
-	cout << tester->getRemaining() << endl;
-	tester->deselectChapter(2);
-	cout << tester->getRemaining() << endl;
-	tester->deselectChapter(3);
-	cout << tester->getRemaining() << endl;
-	
 	while (answer != 'q'){
 		cout << tester->getQuestion() << endl;
 		cin >> answer;
@@ -31,8 +22,7 @@ int main(){
 		}else{
 			cout << "Wrong!" << endl;
 		}
-		cout << endl << endl;
-		cout << tester->getRemaining() << " questions remaning." << ((tester->getTotal() - (float)tester->getRemaining())*100)/(float)tester->getTotal() << "% complete" << endl << endl;
+		cout << tester->getRemaining() << " questions remaning." << ((tester->getCorrect())*100)/(float)tester->getTotal() << "% complete" << endl << endl;
 	}
 
 	delete tester;

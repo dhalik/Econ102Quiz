@@ -6,7 +6,6 @@
 
 class Tester{
 	std::ifstream * in;
-	int totalQ;
 	int randInt;
 
 	int correct;
@@ -17,6 +16,7 @@ class Tester{
 	std::vector<std::string> ignoreList;
 	std::vector<bool> selectedChapters;
 	std::string file;
+	std::vector<int> totalQ;
 
 private:
 	void readQuestion();
@@ -30,7 +30,7 @@ public:
 
 	bool done();
 	std::string getQuestion();
-	bool getAnswer(char);
+	char getAnswer(char);
 	int getRemaining();
 	int getTotal();
 	int getCorrect();
