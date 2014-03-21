@@ -1,14 +1,28 @@
 #include <QApplication>
 #include <QWidget>
+#include <QRadioButton>
+#include <QGroupBox>
+#include <QVBoxLayout>
+
 
 int main(int argc, char * argv[]){
-	QApplication qapp(argc,argv);
+	QApplication app(argc,argv);
 
-	QWidget window;
+	QGroupBox * groupBox = new QGroupBox("RB");
+	QRadioButton * r1 = new QRadioButton ("Ans1");
+	QRadioButton * r2 = new QRadioButton ("Ans2");
+	QRadioButton * r3 = new QRadioButton ("Ans3");
 
-	window.resize(200,200);
-	window.setWindowTitle("Helloworld");
-	window.show;
+	QVBoxLayout * vbox = new QVBoxLayout;
+	vbox->addWidget(r1);
+	vbox->addWidget(r2);
+	vbox->addWidget(r3);
+	vbox->addStretch(1);
 
-	qapp.exec();
+	groupBox->setLayout(vbox);
+
+	groupBox->setWindowTitle("Helloworld");
+	groupBox->show();
+
+	app.exec();
 }

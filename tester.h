@@ -1,5 +1,8 @@
 //tester.h
 
+#ifndef __TESTER_H__
+#define __TESTER_H__
+
 #include <fstream>
 #include <string>
 #include <vector>
@@ -37,3 +40,6 @@ public:
 	void deselectChapter(int);
 	void selectChapter(int);
 };
+
+
+#endif
