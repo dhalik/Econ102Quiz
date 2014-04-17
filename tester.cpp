@@ -79,7 +79,7 @@ void Tester::readQuestion(){
 			questions.pop_back();
 		}
 	}
-	for (unsigned int i = 0; i < chapters.size(); i++){
+	for (unsigned int i = 0; i < chapters.size() - 1; i++){
 		selectedChapters.push_back(true);
 	}
 }
@@ -128,11 +128,19 @@ Tester::~Tester(){
 	delete in;
 }
 
-void Tester::deselectChapter(int n){
+vector<bool> Tester::getAllSelected(){
+	return selectedChapters;
+}
+
+void Tester::deselectChapter(unsigned int n){
 	bool alldes = false;
+	if (n > selectedChapters.size())
+		return;
+	selectedChapters[n-1] = false;
 	for (vector<bool>::iterator it = selectedChapters.begin(); it < selectedChapters.end(); it++)
 		alldes = alldes || *it;
 	if (!alldes)
+		selectedChapters[n-1] = true;
 		return;
 	selectedChapters[n-1] = false;
 }

@@ -37,8 +37,9 @@ public:
 	int getRemaining();
 	int getTotal();
 	int getCorrect();
-	void deselectChapter(int);
+	void deselectChapter(unsigned int);
 	void selectChapter(int);
+	std::vector<bool> getAllSelected();
 };
 
 
