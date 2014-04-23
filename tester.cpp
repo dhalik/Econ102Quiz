@@ -16,8 +16,6 @@ char toUpper(char v){
 	return v;
 }
 
-
-
 Tester::Tester(string s){
 	file = s;
 	this->in = new ifstream(s.c_str());
@@ -48,7 +46,11 @@ void Tester::getIgnores(){
 void Tester::readQuestion(){
 	string temp;
 	bool done = false;
-	questions.push_back("");
+
+	string q;
+	char corr;
+	vector<string> ans;
+
 	while(!done){
 		getline(*in,temp);
 		stringstream ss(temp);		
@@ -57,26 +59,39 @@ void Tester::readQuestion(){
 
 		if (isQuestion(cond)){
 			if (cond == "Answer:"){
-				answers.push_back(toUpper(temp[temp.length()-1]));
-				questions.push_back("");
+				corr = toUpper(temp[temp.length()-1]);
+				questions.push_back(Question(q,ans,corr));
+				q = '\0';
+				ans.erase(ans.begin(),ans.end());
+				corr = '\0';
 			}
 			else if (cond == "Chapter"){
 				chapters.push_back(questions.size());
+				#ifdef DEBUG
+					cout << questions.size() << " ends the chapter" << endl;
+				#endif
 				if (questions.size() > 1)
 					totalQ.push_back(questions.size() -chapters[chapters.size()-2]);
 			}
 			else{
-				if (cond.length() == 2 && (cond[0]-60) > 0) questions[questions.size()-1]+="\t";
-				questions[questions.size()-1]+=temp;
-				questions[questions.size()-1]+="\n";
+				//if Uppercase letter, and of form xx. So an answer, then tab it
+				if (cond.length() == 2 && (cond[0]-'a') > 0){
+					temp = "\t" + temp;
+					ans.push_back(temp);
+				}
+				else if (q.length() > 0){
+					q = temp;
+				}
 			}
 		}
 
 		if (in->eof()){
 			done = true;
 			chapters.push_back(questions.size());
+			#ifdef DEBUG
+				cout << questions.size() << " ends the chapter" << endl;
+			#endif
 			totalQ.push_back(questions.size() - chapters[chapters.size()-2]);
-			questions.pop_back();
 		}
 	}
 	for (unsigned int i = 0; i < chapters.size() - 1; i++){
@@ -85,33 +100,42 @@ void Tester::readQuestion(){
 }
 
 bool Tester::done(){
-	return questions.size()==0;
+	for (vector<Question>::iterator i = questions.begin(); i < questions.end(); i++)
+		if (!(i->isAnswered()))
+			return false;
+	return true;
 }
 
 string Tester::getQuestion(){
 	randInt = (rand() % questions.size());
-	while (!selectedChapters[getChapter(randInt+1)-1]) //make sure getchapter is > 0.... Thats for later though.
+	while (!selectedChapters[getChapter(randInt+1)-1] && !questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
 		randInt = (rand() % questions.size());
-	return questions[randInt];
+	#ifdef DEBUG
+		cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << endl;
+	#endif
+	return questions[randInt].getQuestion() + "\n" + questions[randInt].getAnswers();
 }
+
 char Tester::getAnswer(char v){
-	if (answers[randInt] == toUpper(v)){
-		questions.erase(questions.begin()+randInt);
-		answers.erase(answers.begin()+randInt);
-		correct++;
+	if (toUpper(questions[randInt].getAnswer()) == toUpper(v)){
+		questions[randInt].setAnswered();
 		return v;
 	}
-	return answers[randInt];
+	return questions[randInt].getAnswer();
 }
 
 int Tester::getCorrect(){
+	int correct;
+	for (vector<Question>::iterator i = questions.begin(); i < questions.end(); i++)
+		if (i->isAnswered())
+			correct++;
 	return correct;
 }
 
 int Tester::getRemaining(){
 	int q = 0;
 	for (unsigned int i = 0; i < questions.size(); i++)
-		if (selectedChapters[getChapter(i+1)-1])
+		if (selectedChapters[getChapter(i+1)-1] && !questions[i].isAnswered())
 			q++;
 	return q;
 }
@@ -150,7 +174,10 @@ void Tester::selectChapter(int n){
 }
 
 int Tester::getChapter(int q){
+	#ifdef DEBUG_L1
+		cout << q << " is the question we are searching for" << endl;
+	#endif
 	for (vector<int>::iterator i = chapters.begin(); i < chapters.end(); ++i)
-		if (q < *i) return (i-chapters.begin());
+		if (q <= *i) return (i-chapters.begin());
 	return -1;
 }

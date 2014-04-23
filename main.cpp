@@ -55,7 +55,10 @@ int main(){
 		}else{
 			cout << "Wrong!" << endl;
 		}
-		cout << tester->getRemaining() << " questions remaning. " << ((tester->getCorrect())*100)/(float)tester->getTotal() << "% complete" << endl << endl;
+		#ifdef DEBUG
+			cout << "remaining " << tester->getRemaining() << " correct " << tester->getCorrect()  << " total " << tester->getTotal() << endl;
+		#endif
+		cout << tester->getRemaining() << " questions remaning. " << ((tester->getCorrect())*100)/((float)tester->getTotal()) << "% complete" << endl << endl;
 	}
 
 	cout << "################################################################################" << endl;

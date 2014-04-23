@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "question.h"
 
 class Tester{
 	std::ifstream * in;
@@ -13,8 +14,7 @@ class Tester{
 
 	int correct;
 
-	std::vector<std::string> questions;
-	std::vector<char> answers;
+	std::vector<Question> questions;
 	std::vector<int> chapters; // location of the first question of each chapter
 	std::vector<std::string> ignoreList;
 	std::vector<bool> selectedChapters;
