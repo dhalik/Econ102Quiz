@@ -61,6 +61,9 @@ void Tester::readQuestion(){
 			if (cond == "Answer:"){
 				corr = toUpper(temp[temp.length()-1]);
 				questions.push_back(Question(q,ans,corr));
+				#ifdef DEBUG
+					cout << "Creating Question with the following: " << q << endl << (questions.end()-1)->getAnswers() << endl << corr << endl << "As q, ans, and corr" << endl;
+				#endif
 				q = '\0';
 				ans.erase(ans.begin(),ans.end());
 				corr = '\0';
@@ -75,7 +78,7 @@ void Tester::readQuestion(){
 			}
 			else{
 				//if Uppercase letter, and of form xx. So an answer, then tab it
-				if (cond.length() == 2 && (cond[0]-'a') > 0){
+				if (cond.length() == 2 && (cond[0]-'a') >= 0){
 					temp = "\t" + temp;
 					ans.push_back(temp);
 				}
@@ -108,10 +111,10 @@ bool Tester::done(){
 
 string Tester::getQuestion(){
 	randInt = (rand() % questions.size());
-	while (!selectedChapters[getChapter(randInt+1)-1] && !questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
+	while (!selectedChapters[getChapter(randInt+1)-1] || questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
 		randInt = (rand() % questions.size());
 	#ifdef DEBUG
-		cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << endl;
+		cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << ". Luckily it satisfies: sc and ans: " << !selectedChapters[getChapter(randInt+1)-1] << !questions[randInt].isAnswered() << endl;
 	#endif
 	return questions[randInt].getQuestion() + "\n" + questions[randInt].getAnswers();
 }
@@ -119,13 +122,16 @@ string Tester::getQuestion(){
 char Tester::getAnswer(char v){
 	if (toUpper(questions[randInt].getAnswer()) == toUpper(v)){
 		questions[randInt].setAnswered();
+		#ifdef DEBUG
+			cout << "Since you answered " << randInt << " correctly, it is now " << questions[randInt].isAnswered() << endl;
+		#endif
 		return v;
 	}
 	return questions[randInt].getAnswer();
 }
 
 int Tester::getCorrect(){
-	int correct;
+	int correct = 0;
 	for (vector<Question>::iterator i = questions.begin(); i < questions.end(); i++)
 		if (i->isAnswered())
 			correct++;

@@ -42,7 +42,7 @@ int main(){
 	cout << "Quizzing will begin now." << endl;
 	cout << "################################################################################" << endl << endl << endl;
 	
-	while (answer != 'q'){
+	while (!tester->done() && answer != 'q'){
 		cout << tester->getQuestion() << endl;
 		cin >> answer;
 		
@@ -58,7 +58,8 @@ int main(){
 		#ifdef DEBUG
 			cout << "remaining " << tester->getRemaining() << " correct " << tester->getCorrect()  << " total " << tester->getTotal() << endl;
 		#endif
-		cout << tester->getRemaining() << " questions remaning. " << ((tester->getCorrect())*100)/((float)tester->getTotal()) << "% complete" << endl << endl;
+		cout << tester->getRemaining() << " questions remaning. " << endl;
+		cout << (int)tester->getCorrect() << " questions answered correctly." << endl << endl;
 	}
 
 	cout << "################################################################################" << endl;
