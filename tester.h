@@ -9,14 +9,11 @@
 #include "question.h"
 
 class Tester{
-	std::ifstream * in;
 	int randInt;
-
 	int correct;
 
 	std::vector<Question> questions;
 	std::vector<int> chapters; // location of the first question of each chapter
-	std::vector<std::string> ignoreList;
 	std::vector<bool> selectedChapters;
 	std::string file;
 	std::vector<int> totalQ;
@@ -24,14 +21,13 @@ class Tester{
 private:
 	void readQuestion();
 	int getChapter(int);
-	bool isQuestion(std::string);
-	void getIgnores();
 
 public:
-	explicit Tester(std::string);
+	explicit Tester();
 	~Tester();
 
 	bool done();
+  void printQ();
 	std::string getQuestion();
 	char getAnswer(char);
 	int getRemaining();

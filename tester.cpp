@@ -5,8 +5,11 @@
 #include <sstream>
 #include <string>
 #include <time.h>
+#include "rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml_utils.hpp"
 
 using namespace std;
+using namespace rapidxml;
 
 
 //locally def function
@@ -16,92 +19,40 @@ char toUpper(char v){
     return v;
 }
 
-Tester::Tester(string s){
-    file = s;
-    this->in = new ifstream(s.c_str());
-    getIgnores();
+Tester::Tester(){
     readQuestion();
-    srand(time(0));
-}
-
-bool Tester::isQuestion(string s){
-    for (vector<string>::iterator it = ignoreList.begin(); it != ignoreList.end(); ++it){
-        if (*it == s) return false;
-    }
-    return true;
-}
-
-void Tester::getIgnores(){
-    string ignoreFile = file+".ign";
-
-    ifstream in(ignoreFile.c_str());
-
-    while (!in.eof()){
-        string ignore;
-        in >> ignore;
-        ignoreList.push_back(ignore);
-    }
+    //srand(time(0));
 }
 
 void Tester::readQuestion(){
-    string temp;
-    bool done = false;
+    rapidxml::file<> xmlFile("QuestionBank/econ.xml");
+    xml_document<> doc;
+    doc.parse<0>(xmlFile.data());
 
-    string q;
-    char corr;
-    vector<string> ans;
-
-    while(!done){
-        getline(*in,temp);
-        stringstream ss(temp);
-        string cond;
-        ss >> cond;
-
-        if (isQuestion(cond)){
-            if (cond == "Answer:"){
-                if (temp.length() == 10){
-                    corr = toUpper(temp[temp.length()-1]);
-                    questions.push_back(Question(q,ans,corr));
-#ifdef DEBUG
-                    cout << "Creating Question with the following: " << q << endl << (questions.end()-1)->getAnswers() << endl << corr << endl << "As q, ans, and corr" << endl;
-#endif
-                }
-                q = '\0';
-                ans.erase(ans.begin(),ans.end());
-                corr = '\0';
-            }
-            else if (cond == "Chapter"){
-                chapters.push_back(questions.size());
-#ifdef DEBUG
-                cout << questions.size() << " ends the chapter" << endl;
-#endif
-                if (questions.size() > 1)
-                    totalQ.push_back(questions.size() -chapters[chapters.size()-2]);
-            }
-            else{
-                //if Uppercase letter, and of form xx. So an answer, then tab it
-                if (cond.length() == 2 && (cond[0]-'A') >= 0){
-                    temp = "\t" + temp;
-                    ans.push_back(temp);
-                }
-                else if (q.length() > 0){
-                    q = temp;
-                }
-            }
+    xml_node<>* root = doc.first_node("econ");
+    for (xml_node<> * chapter_node = root->first_node("chapter"); chapter_node; chapter_node = chapter_node->next_sibling()){
+        for (xml_node<> * q_node = chapter_node->first_node("question"); q_node; q_node = q_node->next_sibling()){
+            vector<string> ans;
+            string question = q_node->first_node("q")->value();
+            ans.push_back(q_node->first_node("a")->value());
+            ans.push_back(q_node->first_node("b")->value());
+            ans.push_back(q_node->first_node("c")->value());
+            ans.push_back(q_node->first_node("d")->value());
+            ans.push_back(q_node->first_node("e")->value());
+            string answerString = q_node->first_node("ans")->value();
+            char answer = answerString[0];
+            Question q(question,ans,answer);
+            questions.push_back(q);
         }
-
-        if (in->eof()){
-            done = true;
-            chapters.push_back(questions.size());
-#ifdef DEBUG
-            cout << questions.size() << " ends the chapter" << endl;
-#endif
-            totalQ.push_back(questions.size() - chapters[chapters.size()-2]);
-        }
+        chapters.push_back(questions.size());
     }
-    for (unsigned int i = 0; i < chapters.size() - 1; i++){
+    totalQ.push_back(*chapters.begin());
+    for (vector<int>::iterator i = chapters.begin(); i != chapters.end(); i++){
         selectedChapters.push_back(true);
+        totalQ.push_back(*i-*(i-1));
     }
+    cout << chapters.size() << endl;
+    cout << selectedChapters.size() << endl;
 }
 
 bool Tester::done(){
@@ -113,10 +64,10 @@ bool Tester::done(){
 
 string Tester::getQuestion(){
     randInt = (rand() % questions.size());
-    while (!selectedChapters[getChapter(randInt+1)-1] || questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
+    while (!selectedChapters[getChapter(randInt+1)] || questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
         randInt = (rand() % questions.size());
 #ifdef DEBUG
-    cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << ". Luckily it satisfies: sc and ans: " << !selectedChapters[getChapter(randInt+1)-1] << !questions[randInt].isAnswered() << endl;
+    cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << ". Luckily it satisfies: sc and ans: " << !selectedChapters[getChapter(randInt+1)] << !questions[randInt].isAnswered() << endl;
 #endif
     return questions[randInt].getQuestion() + "\n" + questions[randInt].getAnswers();
 }
@@ -143,7 +94,7 @@ int Tester::getCorrect(){
 int Tester::getRemaining(){
     int q = 0;
     for (unsigned int i = 0; i < questions.size(); i++)
-        if (selectedChapters[getChapter(i+1)-1] && !questions[i].isAnswered())
+        if (selectedChapters[getChapter(i+1)] && !questions[i].isAnswered())
             q++;
     return q;
 }
@@ -157,7 +108,6 @@ int Tester::getTotal(){
 }
 
 Tester::~Tester(){
-    delete in;
 }
 
 vector<bool> Tester::getAllSelected(){
@@ -188,4 +138,11 @@ int Tester::getChapter(int q){
     for (vector<int>::iterator i = chapters.begin(); i < chapters.end(); ++i)
         if (q <= *i) return (i-chapters.begin());
     return -1;
+}
+
+void Tester::printQ(){
+    for (vector<Question>::iterator it = questions.begin(); it != questions.end(); it++){
+        cout << it->getQuestion() << endl;
+        cout << it->getAnswers() << endl;
+    }
 }
