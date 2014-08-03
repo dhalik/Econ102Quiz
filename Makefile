@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -MMD -g -DDEBUG_L0
+CXXFLAGS = -Wall -MMD -g -DDEBUG
 EXEC = Quizzer
 OBJECTS = main.o tester.o question.o
 DEPENDS = ${OBJECTS:.o=.d}

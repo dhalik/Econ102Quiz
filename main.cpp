@@ -10,7 +10,7 @@ int main(){
 	char answer = 'a';
 	string bank = "";
 	cout << "################################################################################" << endl;
-	Tester * tester = new Tester("QuestionBank/is.dat");
+	Tester * tester = new Tester("QuestionBank/econ.dat");
 
 	cout << "Welcome to IS Quizzing." << endl << "Currently, the following chapters are selected (i.e. questions will be asked form them): " << endl;
 	vector<bool> sc = tester->getAllSelected();
@@ -20,7 +20,7 @@ int main(){
 	}
 	cout << endl;
 	cout << "Enter a list of chapters seperated by spaces, terminated by -1 to deselect them from the quiz. (i.e. 1 3 6 -1)" << endl;
-	
+
 	int ds = 100000;
 	while (ds > -1){
 		if (cin >> ds)
@@ -41,15 +41,15 @@ int main(){
 	cout << endl;
 	cout << "Quizzing will begin now." << endl;
 	cout << "################################################################################" << endl << endl << endl;
-	
+
 	while (!tester->done() && answer != 'q'){
 		cout << tester->getQuestion() << endl;
 		cin >> answer;
-		
+
 		char ans = tester->getAnswer(answer);
 		cout << ans << endl;
-		
-		
+
+
 		if (ans==answer){
 			cout << "Correct!" << endl;
 		}else{
