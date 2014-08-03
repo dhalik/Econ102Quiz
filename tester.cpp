@@ -14,14 +14,14 @@ using namespace rapidxml;
 
 //locally def function
 char toUpper(char v){
-    if ('a' < v and v < 'z')
+    if ('a' <= v and v <= 'z')
         v-=32;
     return v;
 }
 
 Tester::Tester(){
     readQuestion();
-    //srand(time(0));
+    srand(time(0));
 }
 
 void Tester::readQuestion(){
@@ -49,24 +49,19 @@ void Tester::readQuestion(){
     totalQ.push_back(*chapters.begin());
     for (vector<int>::iterator i = chapters.begin(); i != chapters.end(); i++){
         selectedChapters.push_back(true);
-        totalQ.push_back(*i-*(i-1));
+        totalQ.push_back(*(i+1)-*i);
     }
-    cout << chapters.size() << endl;
-    cout << selectedChapters.size() << endl;
 }
 
 bool Tester::done(){
-    for (vector<Question>::iterator i = questions.begin(); i < questions.end(); i++)
-        if (!(i->isAnswered()))
-            return false;
-    return true;
+    return (getRemaining() == 0);
 }
 
 string Tester::getQuestion(){
     randInt = (rand() % questions.size());
     while (!selectedChapters[getChapter(randInt+1)] || questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
         randInt = (rand() % questions.size());
-#ifdef DEBUG
+#ifdef DEBUG_L1
     cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << ". Luckily it satisfies: sc and ans: " << !selectedChapters[getChapter(randInt+1)] << !questions[randInt].isAnswered() << endl;
 #endif
     return questions[randInt].getQuestion() + "\n" + questions[randInt].getAnswers();
@@ -75,7 +70,7 @@ string Tester::getQuestion(){
 char Tester::getAnswer(char v){
     if (toUpper(questions[randInt].getAnswer()) == toUpper(v)){
         questions[randInt].setAnswered();
-#ifdef DEBUG
+#ifdef DEBUG_L1
         cout << "Since you answered " << randInt << " correctly, it is now " << questions[randInt].isAnswered() << endl;
 #endif
         return v;

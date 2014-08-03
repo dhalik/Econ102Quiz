@@ -5,18 +5,18 @@
 #include <vector>
 
 class Question{
-	private:
-		std::vector<std::string> answers;
-		char answer;
-		bool answered;
-		std::string question;
-	public:
-		Question(std::string, std::vector<std::string>, char);
-		char getAnswer();
-		bool isAnswered();
-		void setAnswered();
-		std::string getQuestion();
-		std::string getAnswers();
+    private:
+        std::vector<std::string> answers;
+        char answer;
+        bool answered;
+        std::string question;
+    public:
+        Question(std::string, std::vector<std::string>, char);
+        char getAnswer();
+        bool isAnswered();
+        void setAnswered();
+        std::string getQuestion();
+        std::string getAnswers();
 };
 
 #endif
