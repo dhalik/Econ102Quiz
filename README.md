@@ -1,13 +1,33 @@
-Econ102Quiz
+Economics Quizzer
 ===========
 
-~~Econ 102~~ Quiz Game (decided things should be more generalized)
+~~Economics~~ Quizzer
 
-This is a basic quizzing program that takes in text format multiple choice input and a "ignore(ign)" file, and uses these two resources to randomly ask questions of the user.
+Parkin and Bade 8e Micro and Macroeconomic Quizer. This program is currently a CLI Quiz game, with questions selection for the 31 chapters in the Canadian Edition. This Quizzer can be extended to other question sets if an xml is provided with data in the format
 
-Features:
-- Dynamic Chapter selection
-- Score keep
-- Qt graphics? (working on it)
-- Questions are removed form play after correct answer
-- Other things I guess... Just haven't been thought of yet!
+    <root>
+        <chapter num=01>
+            <question>
+                <q>What is the value of 4 + 5</q>
+                <a>9</a>
+                <b>3</b>
+                <c>1</c>
+                <d>4</d>
+                <e>8</e>
+                <ans>A</ans>
+            <question>
+                <q>What language is this written in?/q>
+                <a>C++</a>
+                <b>Python</b>
+                <c>C</c>
+                <d>F#</d>
+                <e>Scheme</e>
+                <ans>A</ans>
+            </question>
+            </question>
+        </chapter>
+    </root>
+
+##Requirements
+
+g++, python, qt5 development libraries
