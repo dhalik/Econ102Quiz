@@ -14,7 +14,7 @@
 
 # Dependancy Compiliations
 *.d
-econ.cpp # generated at make time
+econ.cpp
 
 # Executables Generated
 Quizzer
