@@ -9,6 +9,9 @@ ${EXEC}: ${OBJECTS}
 
 -include ${DEPENDS}
 
+econ.cpp: QuestionBank/econ.xml
+	python encode.py
+
 Quizzer.exe: ${OBJECTS}
 	i586-mingw32msvc-g++ main.cpp tester.cpp question.cpp -o ${EXEC}.exe
 

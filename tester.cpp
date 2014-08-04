@@ -7,6 +7,7 @@
 #include <time.h>
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
+#include "econ.cpp"
 
 using namespace std;
 using namespace rapidxml;
@@ -25,9 +26,12 @@ Tester::Tester(){
 }
 
 void Tester::readQuestion(){
-    rapidxml::file<> xmlFile("QuestionBank/econ.xml");
+/*    rapidxml::file<> xmlFile("QuestionBank/econ.xml");
     xml_document<> doc;
-    doc.parse<0>(xmlFile.data());
+    doc.parse<0>(xmlFile.data());*/
+
+    xml_document<> doc;
+    doc.parse<0>(question_data);
 
     xml_node<>* root = doc.first_node("econ");
     for (xml_node<> * chapter_node = root->first_node("chapter"); chapter_node; chapter_node = chapter_node->next_sibling()){
@@ -41,6 +45,12 @@ void Tester::readQuestion(){
             ans.push_back(q_node->first_node("e")->value());
             string answerString = q_node->first_node("ans")->value();
             char answer = answerString[0];
+            if (question.find(" Figure ") != string::npos)
+                continue;
+            if (question.find("Refer to Table") != string::npos)
+                continue;
+            if (question.find("Refer to Fact") != string::npos)
+                continue;
             Question q(question,ans,answer);
             questions.push_back(q);
         }

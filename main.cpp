@@ -53,12 +53,7 @@ int main(){
         }else{
             cout << "Wrong!" << endl;
         }
-#ifdef DEBUG
-        cout << "remaining " << tester->getRemaining() << " correct " << tester->getCorrect()  << " total " << tester->getTotal() << endl;
-#endif
-
-        cout << tester->getRemaining() << " questions remaning. " << endl;
-        cout << (int)tester->getCorrect() << " questions answered correctly." << endl << endl;
+        cout << (100*tester->getCorrect())/tester->getTotal()  << "\% complete. Remaining Questions: " << tester->getRemaining() << endl;
     }
 
     cout << "################################################################################" << endl;
