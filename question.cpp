@@ -34,3 +34,7 @@ string Question::getAnswers(){
 void Question::setAnswered(){
     answered = true;
 }
+
+vector<string> Question::getAnswerList(){
+    return answers;
+}

@@ -17,6 +17,7 @@ class Question{
         void setAnswered();
         std::string getQuestion();
         std::string getAnswers();
+        std::vector<std::string> getAnswerList();
 };
 
 #endif

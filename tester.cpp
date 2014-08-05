@@ -144,10 +144,3 @@ int Tester::getChapter(int q){
         if (q <= *i) return (i-chapters.begin());
     return -1;
 }
-
-void Tester::printQ(){
-    for (vector<Question>::iterator it = questions.begin(); it != questions.end(); it++){
-        cout << it->getQuestion() << endl;
-        cout << it->getAnswers() << endl;
-    }
-}

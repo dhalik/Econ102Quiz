@@ -5,6 +5,9 @@
 #include <QRadioButton>
 #include <QLabel>
 #include <QPushButton>
+#include <vector>
+#include "question.h"
+#include "tester.h"
 
 class Window : public QWidget
 {
@@ -12,21 +15,25 @@ class Window : public QWidget
 
     public:
         Window(QWidget *parent = 0);
+        void update(Question*);
 
         private slots:
             void checkAnswer();
             void skip();
-    private:
-        QLabel * question;
-        QRadioButton * a;
-        QRadioButton * b;
-        QRadioButton * c;
-        QRadioButton * d;
-        QRadioButton * e;
 
+    private:
+        //QT Onscreen items
+        QLabel * question;
+        std::vector<QRadioButton*> buttons;
         QPushButton *answerButton;
         QPushButton *skipButton;
+        QMenu * fileMenu;
+        QAction * selectChapters;
 
+        //Tester
+        Tester * t;
+
+        //Internal Functions
         QPushButton * createButton(const QString &, const char*);
 };
 

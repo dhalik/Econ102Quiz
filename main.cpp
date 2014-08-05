@@ -21,7 +21,7 @@ int main(){
     cout << endl;
     cout << "Enter a list of chapters seperated by spaces, terminated by -1 to deselect them from the quiz. (i.e. 1 3 6 -1)" << endl;
 
-    int deselect = 100000;
+    int deselect = 1;
     while (deselect > -1){
         if (cin >> deselect)
             tester->deselectChapter(deselect);

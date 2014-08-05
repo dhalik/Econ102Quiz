@@ -1,6 +1,10 @@
 #include <QtWidgets>
 
 #include "window.h"
+#include "question.h"
+#include <vector>
+
+using namespace std;
 
 Window::Window(QWidget *parent): QWidget(parent){
 
@@ -14,21 +18,14 @@ Window::Window(QWidget *parent): QWidget(parent){
 
     question = new QLabel(tr("This here... This is supposed to be a question"));
 
-    //create radio buttons
-    a = new QRadioButton(tr("Answer1"));
-    b = new QRadioButton(tr("Answer2"));
-    c = new QRadioButton(tr("Answer3"));
-    d = new QRadioButton(tr("Answer4"));
-    e = new QRadioButton(tr("Answer5"));
-
     //set up radio button layout
     QGroupBox * groupBox= new QGroupBox;
     QVBoxLayout * vbox = new QVBoxLayout;
-    vbox->addWidget(a);
-    vbox->addWidget(b);
-    vbox->addWidget(c);
-    vbox->addWidget(d);
-    vbox->addWidget(e);
+    for (int i = 0; i < 5; i++){
+        QRadioButton * tmp = new QRadioButton(tr("Answer1"));
+        buttons.push_back(tmp);
+        vbox->addWidget(tmp);
+    }
     groupBox->setLayout(vbox);
 
     QVBoxLayout * mainLayout = new QVBoxLayout;
@@ -38,8 +35,17 @@ Window::Window(QWidget *parent): QWidget(parent){
 
     //set QWidget layout and info
     setLayout(mainLayout);
-    setWindowTitle(tr("Find Files"));
-    resize(700, 300);
+    setWindowTitle(tr("Economics"));
+}
+
+void Window::update(Question *q){
+    vector<string> answerList = q->getAnswerList();
+    question->setText(tr(q->getQuestion().c_str()));
+    for (vector<QRadioButton*>::iterator it = buttons.begin();
+            it != buttons.end();
+            ++it){
+        (*it)->setText(tr(answerList[it-buttons.begin()].c_str()));
+    }
 }
 
 QPushButton *Window::createButton(const QString &text, const char *member)
@@ -50,7 +56,6 @@ QPushButton *Window::createButton(const QString &text, const char *member)
 }
 
 void Window::checkAnswer(){
-
 }
 
 void Window::skip(){
