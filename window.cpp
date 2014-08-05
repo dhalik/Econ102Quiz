@@ -36,9 +36,12 @@ Window::Window(QWidget *parent): QWidget(parent){
     //set QWidget layout and info
     setLayout(mainLayout);
     setWindowTitle(tr("Economics"));
+
+    t = new Tester();
 }
 
-void Window::update(Question *q){
+void Window::update(){
+    Question * q = t->getQuestionObj();
     vector<string> answerList = q->getAnswerList();
     question->setText(tr(q->getQuestion().c_str()));
     for (vector<QRadioButton*>::iterator it = buttons.begin();
@@ -48,16 +51,25 @@ void Window::update(Question *q){
     }
 }
 
-QPushButton *Window::createButton(const QString &text, const char *member)
-{
+QPushButton *Window::createButton(const QString &text, const char *member){
     QPushButton *button = new QPushButton(text);
     connect(button, SIGNAL(clicked()), this, member);
     return button;
 }
 
 void Window::checkAnswer(){
+    char ans = '0';
+    for (vector<QRadioButton*>::iterator it = buttons.begin(); it != buttons.end(); ++it){
+        if ((*it)->isChecked()){
+            ans = 'a' + (it-buttons.begin());
+        }
+    }
+    if (ans == '0')
+        return;
+    t->getAnswer(ans);
+    update();
 }
 
 void Window::skip(){
-
+    update();
 }

@@ -47,7 +47,7 @@ void Tester::readQuestion(){
                 continue;
             if (question.find("Refer to Fact") != string::npos)
                 continue;
-            Question q(question,ans,answer);
+            Question * q = new Question (question,ans,answer);
             questions.push_back(q);
         }
         chapters.push_back(questions.size());
@@ -57,7 +57,7 @@ void Tester::readQuestion(){
         selectedChapters.push_back(true);
         totalQ.push_back(*(i+1)-*i);
     }
-#ifdef DEBUG
+#ifdef DEBUG_L1
     for (vector<int>::iterator i = totalQ.begin(); i != totalQ.end(); i++){
         cout << *i << endl;
     }
@@ -68,31 +68,34 @@ bool Tester::done(){
     return (getRemaining() == 0);
 }
 
-string Tester::getQuestion(){
+Question * Tester::getQuestionObj(){
     randInt = (rand() % questions.size());
-    while (!selectedChapters[getChapter(randInt+1)] || questions[randInt].isAnswered()) //make sure getchapter is > 0.... Thats for later though.
+    while (!selectedChapters[getChapter(randInt+1)] || questions[randInt]->isAnswered()) //make sure getchapter is > 0.... Thats for later though.
         randInt = (rand() % questions.size());
-#ifdef DEBUG_L1
-    cout << "Choosing " << randInt << " from chapter " << getChapter(randInt+1) << ". Luckily it satisfies: sc and ans: " << !selectedChapters[getChapter(randInt+1)] << !questions[randInt].isAnswered() << endl;
-#endif
-    return questions[randInt].getQuestion() + "\n" + questions[randInt].getAnswers();
+    return questions[randInt];
+}
+
+string Tester::getQuestion(){
+    Question * q = getQuestionObj();
+    return q->getQuestion() + "\n" +q->getAnswers();
+
 }
 
 char Tester::getAnswer(char v){
-    if (toUpper(questions[randInt].getAnswer()) == toUpper(v)){
-        questions[randInt].setAnswered();
+    if (toUpper(questions[randInt]->getAnswer()) == toUpper(v)){
+        questions[randInt]->setAnswered();
 #ifdef DEBUG_L1
         cout << "Since you answered " << randInt << " correctly, it is now " << questions[randInt].isAnswered() << endl;
 #endif
         return v;
     }
-    return questions[randInt].getAnswer();
+    return questions[randInt]->getAnswer();
 }
 
 int Tester::getCorrect(){
     int correct = 0;
-    for (vector<Question>::iterator i = questions.begin(); i < questions.end(); i++)
-        if (i->isAnswered())
+    for (vector<Question*>::iterator i = questions.begin(); i < questions.end(); i++)
+        if ((*i)->isAnswered())
             correct++;
     return correct;
 }
@@ -100,7 +103,7 @@ int Tester::getCorrect(){
 int Tester::getRemaining(){
     int q = 0;
     for (unsigned int i = 0; i < questions.size(); i++)
-        if (selectedChapters[getChapter(i+1)] && !questions[i].isAnswered())
+        if (selectedChapters[getChapter(i+1)] && !questions[i]->isAnswered())
             q++;
     return q;
 }

@@ -13,7 +13,7 @@ class Tester{
     int randInt;
     int correct;
 
-    std::vector<Question> questions;
+    std::vector<Question*> questions;
     std::vector<int> chapters; // location of the first question of each chapter
     std::vector<bool> selectedChapters;
     std::string file;
@@ -30,6 +30,7 @@ class Tester{
     bool done();
     //return a random question
     std::string getQuestion();
+    Question* getQuestionObj();
 
     //checks answer
     char getAnswer(char);

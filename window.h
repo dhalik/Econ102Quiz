@@ -15,7 +15,7 @@ class Window : public QWidget
 
     public:
         Window(QWidget *parent = 0);
-        void update(Question*);
+        void update();
 
         private slots:
             void checkAnswer();
@@ -27,6 +27,8 @@ class Window : public QWidget
         std::vector<QRadioButton*> buttons;
         QPushButton *answerButton;
         QPushButton *skipButton;
+
+        //QT File menu
         QMenu * fileMenu;
         QAction * selectChapters;
 
