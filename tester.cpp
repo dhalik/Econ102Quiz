@@ -26,10 +26,6 @@ Tester::Tester(){
 }
 
 void Tester::readQuestion(){
-/*    rapidxml::file<> xmlFile("QuestionBank/econ.xml");
-    xml_document<> doc;
-    doc.parse<0>(xmlFile.data());*/
-
     xml_document<> doc;
     doc.parse<0>(question_data);
 
@@ -61,6 +57,11 @@ void Tester::readQuestion(){
         selectedChapters.push_back(true);
         totalQ.push_back(*(i+1)-*i);
     }
+#ifdef DEBUG
+    for (vector<int>::iterator i = totalQ.begin(); i != totalQ.end(); i++){
+        cout << *i << endl;
+    }
+#endif
 }
 
 bool Tester::done(){
