@@ -1,7 +1,7 @@
 import struct;                  #    Needed to convert string to byte
 
 f = open("QuestionBank/econ.xml","rb")       #    Open the file in read binary mode
-s = "char question_data[] = {"
+s = "char question_data_econ[] = {"
 
 b = f.read(1)                   #    Read one byte from the stream
 db = struct.unpack("b",b)[0]     #    Transform it to byte

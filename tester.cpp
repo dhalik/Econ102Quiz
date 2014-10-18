@@ -7,11 +7,10 @@
 #include <time.h>
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
-#include "econ.cpp"
+#include "org.h"
 
 using namespace std;
 using namespace rapidxml;
-
 
 //locally def function
 char toUpper(char v){
@@ -27,9 +26,9 @@ Tester::Tester(){
 
 void Tester::readQuestion(){
     xml_document<> doc;
-    doc.parse<0>(question_data);
+    doc.parse<0>(question_data_org);
 
-    xml_node<>* root = doc.first_node("econ");
+    xml_node<>* root = doc.first_node("org");
     for (xml_node<> * chapter_node = root->first_node("chapter"); chapter_node; chapter_node = chapter_node->next_sibling()){
         for (xml_node<> * q_node = chapter_node->first_node("question"); q_node; q_node = q_node->next_sibling()){
             vector<string> ans;
@@ -38,7 +37,7 @@ void Tester::readQuestion(){
             ans.push_back(q_node->first_node("b")->value());
             ans.push_back(q_node->first_node("c")->value());
             ans.push_back(q_node->first_node("d")->value());
-            ans.push_back(q_node->first_node("e")->value());
+            //ans.push_back(q_node->first_node("e")->value());
             string answerString = q_node->first_node("ans")->value();
             char answer = answerString[0];
             if (question.find(" Figure ") != string::npos)
