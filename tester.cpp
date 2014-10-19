@@ -7,7 +7,7 @@
 #include <time.h>
 #include "rapidxml/rapidxml.hpp"
 #include "rapidxml/rapidxml_utils.hpp"
-#include "org.h"
+#include "questionrepo.h"
 
 using namespace std;
 using namespace rapidxml;
@@ -26,9 +26,9 @@ Tester::Tester(){
 
 void Tester::readQuestion(){
     xml_document<> doc;
-    doc.parse<0>(question_data_org);
+    doc.parse<0>(question_data);
 
-    xml_node<>* root = doc.first_node("org");
+    xml_node<>* root = doc.first_node("testrepo");
     for (xml_node<> * chapter_node = root->first_node("chapter"); chapter_node; chapter_node = chapter_node->next_sibling()){
         for (xml_node<> * q_node = chapter_node->first_node("question"); q_node; q_node = q_node->next_sibling()){
             vector<string> ans;
@@ -37,15 +37,11 @@ void Tester::readQuestion(){
             ans.push_back(q_node->first_node("b")->value());
             ans.push_back(q_node->first_node("c")->value());
             ans.push_back(q_node->first_node("d")->value());
-            //ans.push_back(q_node->first_node("e")->value());
+            xml_node<char> * np = q_node->first_node("e");
+            if (np != NULL)
+                ans.push_back(np->value());
             string answerString = q_node->first_node("ans")->value();
             char answer = answerString[0];
-            if (question.find(" Figure ") != string::npos)
-                continue;
-            if (question.find("Refer to Table") != string::npos)
-                continue;
-            if (question.find("Refer to Fact") != string::npos)
-                continue;
             Question * q = new Question (question,ans,answer);
             questions.push_back(q);
         }

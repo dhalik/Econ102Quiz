@@ -1,33 +1,55 @@
-Economics Quizzer
+Quizzer
 ===========
 
-~~Economics~~ Quizzer
+Quizzer
 
-Parkin and Bade 8e Micro and Macroeconomic Quizer. This program is currently a CLI Quiz game, with questions selection for the 31 chapters in the Canadian Edition. This Quizzer can be extended to other question sets if an xml is provided with data in the format
+A small CLI program that asks multiple choice questions specified in a external XML file.
 
-    <root>
-        <chapter num=01>
+##Quick Start
+
+Navigate to cloned directory and run:
+
+    make questionrepo.h
+    make
+
+On a unix environment the program can be run by calling
+
+    ./Quizzer
+
+
+##Adding custom QuestionSet
+
+To add a custom question set, use the following XML template to create your question file:
+
+    <testrepo>
+        <chapter num="1">
             <question>
-                <q>What is the value of 4 + 5</q>
-                <a>9</a>
-                <b>3</b>
-                <c>1</c>
-                <d>4</d>
-                <e>8</e>
-                <ans>A</ans>
-            <question>
-                <q>What language is this written in?/q>
+                <q>Which of the following is a functional programming lanaguge?<q>
                 <a>C++</a>
-                <b>Python</b>
-                <c>C</c>
-                <d>F#</d>
-                <e>Scheme</e>
-                <ans>A</ans>
+                <b>Java</b>
+                <c>Scheme</c>
+                <d>C</d>
+                <ans>C</ans>
             </question>
+            <question>
+                <q>Which of the following is not a functional programming lanaguge?<q>
+                <a>C++</a>
+                <b>Haskell</b>
+                <c>Scheme</c>
+                <d>ML</d>
+                <ans>C</ans>
             </question>
         </chapter>
-    </root>
+    </testrepo>
+
+Then, run:
+
+    python encode.py QuestionBank/"customfile.xml"
+    make
+
+The compiled program will be a standalone that runs with the specified questionset.
+
 
 ##Requirements
 
-g++, python, qt5 development libraries
+g++, python

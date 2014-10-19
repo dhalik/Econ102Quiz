@@ -14,8 +14,11 @@
 
 # Dependancy Compiliations
 *.d
-econ.cpp
 
 # Executables Generated
 Quizzer
 window
+Quizzer.exe
+
+# Generated Files
+questionrepo.h
