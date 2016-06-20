@@ -35,9 +35,13 @@ void Tester::readQuestion(){
             string question = q_node->first_node("q")->value();
             ans.push_back(q_node->first_node("a")->value());
             ans.push_back(q_node->first_node("b")->value());
-            ans.push_back(q_node->first_node("c")->value());
-            ans.push_back(q_node->first_node("d")->value());
-            xml_node<char> * np = q_node->first_node("e");
+            xml_node<char> * np = q_node->first_node("c");
+            if (np != NULL)
+                ans.push_back(np->value());
+            np = q_node->first_node("d");
+            if (np != NULL)
+                ans.push_back(np->value());
+            np = q_node->first_node("e");
             if (np != NULL)
                 ans.push_back(np->value());
             string answerString = q_node->first_node("ans")->value();

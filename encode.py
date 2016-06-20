@@ -3,13 +3,13 @@ import sys;
 import os.path;
 
 if (len(sys.argv) != 2):
-    print "Run this utility as python encode.py <questionFile.xml>"
+    print("Run this utility as python encode.py <questionFile.xml>")
     sys.exit(0)
 
 filename = sys.argv[1]
 
 if (not os.path.isfile(filename)):
-    print "File passed does not exist or is unusable"
+    print("File passed does not exist or is unusable")
     sys.exit(0)
 
 f = open(sys.argv[1],"rb")       #    Open the file in read binary mode

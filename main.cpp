@@ -12,7 +12,7 @@ int main(){
     cout << "################################################################################" << endl;
     Tester * tester = new Tester();
 
-    cout << "Welcome to Org Quizzing." << endl << "Currently, the following chapters are selected (i.e. questions will be asked form them): " << endl;
+    cout << "Currently, the following chapters are selected (i.e. questions will be asked from them): " << endl;
     vector<bool> sc = tester->getAllSelected();
     for (vector<bool>::iterator i = sc.begin(); i < sc.end(); i++){
         if (*i)
