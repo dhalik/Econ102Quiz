@@ -109,9 +109,11 @@ int Tester::getRemaining(){
 
 int Tester::getTotal(){
     int q = 0;
-    for (unsigned int i = 0; i < totalQ.size(); i++)
-        if (selectedChapters[i])
+    for (unsigned int i = 0; i < totalQ.size(); i++){
+        if (selectedChapters[i]){
             q+=totalQ[i];
+        }
+    }
     return q;
 }
 

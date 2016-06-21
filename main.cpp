@@ -53,7 +53,7 @@ int main(){
         }else{
             cout << "Wrong!" << endl;
         }
-        cout << (100*tester->getCorrect())/tester->getTotal()  << "\% complete. Remaining Questions: " << tester->getRemaining() << endl;
+        cout << (tester->getCorrect()) << " of " << tester->getTotal()  << " complete. Remaining Questions: " << tester->getRemaining() << endl;
     }
 
     cout << "################################################################################" << endl;
